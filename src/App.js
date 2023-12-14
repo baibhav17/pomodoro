@@ -1,5 +1,5 @@
 import './App.css';
-import PomodoroCounter from './CountdownTimer';
+import PomodoroCounter from './PomodoroCounter';
 
 function App() {
   return (
