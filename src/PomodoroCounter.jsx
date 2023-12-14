@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './PomodoroCounter.css';
 
 const PomodoroCounter = () => {
   const [hours, setHours] = useState(0);
@@ -8,6 +9,47 @@ const PomodoroCounter = () => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [timerRunning, setTimerRunning] = useState(false);
   const [alertTriggered, setAlertTriggered] = useState(false);
+  const [youtubeTitle, setYoutubeTitle] = useState('');
+  const [youtubeLink, setYoutubeLink] = useState('');
+
+  const youtubeTableRowMenu = ['title', 'link','edit', 'delete'];
+  const [youtubePlaylist, setYoutubePlaylist] = useState([
+    {
+      title: 'Madhubala',
+      link:'https://youtu.be/vEmBUhnBtFI?si=W9Rza6mjBUuNyWfo',
+      // edit:<button>edit</button>,
+      edit: 'edit',
+      delete: 'delete'
+      // delete:<button>delete</button>
+    },
+    {
+      title: 'Iraday',
+      link: 'https://youtu.be/Qwm6BSGrOq0?si=NncWGYO_gGBdGVOj',
+      // edit: <button>edit</button>,
+      // delete: <button>delete</button>,
+      edit: 'edit',
+      delete: 'delete'
+    }
+  ])
+
+  // let youtubePlaylist = [
+  //   {
+  //     title: 'Madhubala',
+  //     link:'https://youtu.be/vEmBUhnBtFI?si=W9Rza6mjBUuNyWfo',
+  //     // edit:<button>edit</button>,
+  //     edit: 'edit',
+  //     delete: 'delete'
+  //     // delete:<button>delete</button>
+  //   },
+  //   {
+  //     title: 'Iraday',
+  //     link: 'https://youtu.be/Qwm6BSGrOq0?si=NncWGYO_gGBdGVOj',
+  //     // edit: <button>edit</button>,
+  //     // delete: <button>delete</button>,
+  //     edit: 'edit',
+  //     delete: 'delete'
+  //   }
+  // ];
 
 useEffect(() => {
     let intervalId;
@@ -32,10 +74,9 @@ useEffect(() => {
 
     const openYouTubeSound = () => {
 
-    const soundArray = ['https://youtu.be/vEmBUhnBtFI?si=W9Rza6mjBUuNyWfo', 'https://youtu.be/Qwm6BSGrOq0?si=NncWGYO_gGBdGVOj'];
-    const randomIndex = Math.floor(Math.random() * soundArray.length);
+    const randomIndex = Math.floor(Math.random() * youtubePlaylist.length);
         
-    const youtubeLink = soundArray[randomIndex];
+    const youtubeLink = youtubePlaylist[randomIndex].link;
 
     const newWindow = window.open(youtubeLink, '_blank');
     if (newWindow) {
@@ -62,6 +103,17 @@ useEffect(() => {
     setTimerRunning(false);
   };
 
+  const addToPlaylist = () => {
+    let newVideo = {
+      index: youtubePlaylist.length,
+      title: youtubeTitle,
+      link: youtubeLink,
+      edit: 'edit',
+      delete: 'delete'
+    }
+    setYoutubePlaylist([...youtubePlaylist, newVideo])
+  }
+
   const resetTimer = () => {
     setHours(0);
     setMinutes(0);
@@ -71,6 +123,11 @@ useEffect(() => {
     setAlertTriggered(false);
     setDirty(false)
   };
+
+  const deleteTitle = (titleIndex,link) => {
+    const filteredYoutubeList = youtubePlaylist.filter((item,i)=> item.link != link && titleIndex != i)
+    setYoutubePlaylist(filteredYoutubeList);
+  }
 
   return (
     <div>
@@ -100,6 +157,39 @@ useEffect(() => {
       <button onClick={stopTimer}>Stop</button>
       <button onClick={resetTimer}>Reset</button>
       <p>{`${String(Math.floor(timeLeft / 3600)).padStart(2, '0')}:${String(Math.floor((timeLeft % 3600) / 60)).padStart(2, '0')}:${String(timeLeft % 60).padStart(2, '0')}`}</p>
+      <div>
+        <p>Youtube Playlist</p>
+        <input
+        type="text"
+        placeholder="Youtube Title"
+        onChange={(e)=>setYoutubeTitle(e.target.value)}
+        />
+        <input
+        type="text"
+        placeholder="Youtube Link"
+        onChange={(e)=>setYoutubeLink(e.target.value)}
+        />
+        <button onClick={addToPlaylist}>Add to playlist</button>
+      </div>
+      <div>
+        <table>
+          <thead>
+            <tr>
+              {youtubeTableRowMenu.map((item, index)=><th key={index}>{item}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {youtubePlaylist.map((item, index) => (
+            <tr key={index}>
+              <td>{item.title}</td>
+              <td><a href={item.link} target="_blank" rel="noopener noreferrer">Watch</a></td>
+              <td><button>{item.edit}</button></td>
+              <td><button onClick={()=>deleteTitle(index,item.link)}>{item.delete}</button></td>
+            </tr>
+          ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
