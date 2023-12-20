@@ -17,16 +17,12 @@ const PomodoroCounter = () => {
     {
       title: 'Madhubala',
       link:'https://youtu.be/vEmBUhnBtFI?si=W9Rza6mjBUuNyWfo',
-      // edit:<button>edit</button>,
       edit: 'edit',
       delete: 'delete'
-      // delete:<button>delete</button>
     },
     {
       title: 'Iraday',
       link: 'https://youtu.be/Qwm6BSGrOq0?si=NncWGYO_gGBdGVOj',
-      // edit: <button>edit</button>,
-      // delete: <button>delete</button>,
       edit: 'edit',
       delete: 'delete'
     }
