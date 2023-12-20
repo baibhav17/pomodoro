@@ -31,8 +31,7 @@ const PomodoroCounter = () => {
     }
   ];
   const youtubePlaylistLocalDB = JSON.parse(localStorage.getItem('youtubePlaylist')) || youtubePlaylisttoLocalDB;
-  const [youtubePlaylist, setYoutubePlaylist] = useState(youtubePlaylistLocalDB)  
-  console.log('localDB', youtubePlaylistLocalDB, 'useState', youtubePlaylist)
+  const [youtubePlaylist, setYoutubePlaylist] = useState(youtubePlaylistLocalDB)
 
   useEffect(() => {
     localStorage.setItem('youtubePlaylist', JSON.stringify(youtubePlaylist));
