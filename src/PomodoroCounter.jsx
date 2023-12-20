@@ -13,39 +13,30 @@ const PomodoroCounter = () => {
   const [youtubeLink, setYoutubeLink] = useState('');
 
   const youtubeTableRowMenu = ['title', 'link','edit', 'delete'];
-  const [youtubePlaylist, setYoutubePlaylist] = useState([
+  let youtubePlaylisttoLocalDB = [
     {
+      index: 1,
       title: 'Madhubala',
       link:'https://youtu.be/vEmBUhnBtFI?si=W9Rza6mjBUuNyWfo',
       edit: 'edit',
       delete: 'delete'
     },
     {
+      
+      index: 2,
       title: 'Iraday',
       link: 'https://youtu.be/Qwm6BSGrOq0?si=NncWGYO_gGBdGVOj',
       edit: 'edit',
       delete: 'delete'
     }
-  ])
+  ];
+  const youtubePlaylistLocalDB = JSON.parse(localStorage.getItem('youtubePlaylist')) || youtubePlaylisttoLocalDB;
+  const [youtubePlaylist, setYoutubePlaylist] = useState(youtubePlaylistLocalDB)  
+  console.log('localDB', youtubePlaylistLocalDB, 'useState', youtubePlaylist)
 
-  // let youtubePlaylist = [
-  //   {
-  //     title: 'Madhubala',
-  //     link:'https://youtu.be/vEmBUhnBtFI?si=W9Rza6mjBUuNyWfo',
-  //     // edit:<button>edit</button>,
-  //     edit: 'edit',
-  //     delete: 'delete'
-  //     // delete:<button>delete</button>
-  //   },
-  //   {
-  //     title: 'Iraday',
-  //     link: 'https://youtu.be/Qwm6BSGrOq0?si=NncWGYO_gGBdGVOj',
-  //     // edit: <button>edit</button>,
-  //     // delete: <button>delete</button>,
-  //     edit: 'edit',
-  //     delete: 'delete'
-  //   }
-  // ];
+  useEffect(() => {
+    localStorage.setItem('youtubePlaylist', JSON.stringify(youtubePlaylist));
+  }, [youtubePlaylist]);
 
 useEffect(() => {
     let intervalId;
@@ -101,13 +92,16 @@ useEffect(() => {
 
   const addToPlaylist = () => {
     let newVideo = {
-      index: youtubePlaylist.length,
+      index: youtubePlaylist.length + 1,
       title: youtubeTitle,
       link: youtubeLink,
       edit: 'edit',
       delete: 'delete'
     }
     setYoutubePlaylist([...youtubePlaylist, newVideo])
+  // localStorage.setItem("youtubePlayList", JSON.stringify(youtubePlaylist));
+    setYoutubeTitle('');
+    setYoutubeTitle('');
   }
 
   const resetTimer = () => {
