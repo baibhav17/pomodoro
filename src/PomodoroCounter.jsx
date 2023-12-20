@@ -3,7 +3,7 @@ import './PomodoroCounter.css';
 
 const PomodoroCounter = () => {
   const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
+  const [minutes, setMinutes] = useState(25);
   const [seconds, setSeconds] = useState(0);
   const [dirty, setDirty] = useState(false)
   const [timeLeft, setTimeLeft] = useState(0);
@@ -63,7 +63,7 @@ useEffect(() => {
       setTimerRunning(false);
       setAlertTriggered(true);
       setHours(0);
-      setMinutes(0);
+      setMinutes(25);
       setSeconds(0);
       alert('Timer has reached 00:00:00');
       openYouTubeSound();
@@ -116,7 +116,7 @@ useEffect(() => {
 
   const resetTimer = () => {
     setHours(0);
-    setMinutes(0);
+    setMinutes(25);
     setSeconds(0);
     setTimeLeft(0);
     setTimerRunning(false);
