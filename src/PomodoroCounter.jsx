@@ -90,17 +90,21 @@ useEffect(() => {
   };
 
   const addToPlaylist = () => {
-    let newVideo = {
-      index: youtubePlaylist.length + 1,
-      title: youtubeTitle,
-      link: youtubeLink,
-      edit: 'edit',
-      delete: 'delete'
+    if(youtubeTitle.length > 0 && youtubeLink.length > 0) {
+      let newVideo = {
+        index: youtubePlaylist.length + 1,
+        title: youtubeTitle,
+        link: youtubeLink,
+        edit: 'edit',
+        delete: 'delete'
+      }
+      setYoutubePlaylist([...youtubePlaylist, newVideo])
+    // localStorage.setItem("youtubePlayList", JSON.stringify(youtubePlaylist));
+      setYoutubeTitle('');
+      setYoutubeTitle('');
+    } else {
+      alert("link and title can't be empty")
     }
-    setYoutubePlaylist([...youtubePlaylist, newVideo])
-  // localStorage.setItem("youtubePlayList", JSON.stringify(youtubePlaylist));
-    setYoutubeTitle('');
-    setYoutubeTitle('');
   }
 
   const resetTimer = () => {
