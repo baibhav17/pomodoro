@@ -76,7 +76,7 @@ table {
   h1:hover {
     color: rgb(67, 59, 177);
     font-size: 2.1em;
-    opacity: 0.5;
-    transform: scale(1.5);
+    opacity: 0.8;
+    transform: scale(1.1);
     transition: all 0.3s ease-in-out 0.2s;
   }
