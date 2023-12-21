@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './PomodoroCounter.css';
+import TaskList from './TaskList';
 
 const PomodoroCounter = () => {
   const [hours, setHours] = useState(0);
@@ -101,7 +102,7 @@ useEffect(() => {
       setYoutubePlaylist([...youtubePlaylist, newVideo])
     // localStorage.setItem("youtubePlayList", JSON.stringify(youtubePlaylist));
       setYoutubeTitle('');
-      setYoutubeTitle('');
+      setYoutubeLink('');
     } else {
       alert("link and title can't be empty")
     }
@@ -124,7 +125,7 @@ useEffect(() => {
 
   return (
     <div>
-      <h1>Countdown Timer</h1>
+      <h1>Pomodoro Timer</h1>
       <input
         type="number"
         placeholder="Hours"
@@ -156,15 +157,20 @@ useEffect(() => {
         type="text"
         placeholder="Youtube Title"
         onChange={(e)=>setYoutubeTitle(e.target.value)}
+        value={youtubeTitle}
         />
         <input
         type="text"
         placeholder="Youtube Link"
         onChange={(e)=>setYoutubeLink(e.target.value)}
+        value={youtubeLink}
         />
         <button onClick={addToPlaylist}>Add to playlist</button>
       </div>
       <div>
+      <TaskList />
+      </div>
+      <div className="youtube-table">
         <table>
           <thead>
             <tr>

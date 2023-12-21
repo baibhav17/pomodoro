@@ -1,6 +1,19 @@
 table {
     border-collapse: collapse;
-    width: 100%;
+    width: 80%;
+  }
+
+  .youtube-table {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .task-list {
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   th, td {
@@ -29,6 +42,17 @@ table {
     color: #fff;
     border-radius: 4px;
   }
+
+  button:hover {
+
+    background: linear-gradient(rgba(0, 255, 213, 0.89), #fff);
+    color: rgb(67, 59, 177);
+   
+  }
+
+  button:disabled {
+    background-color: grey;
+  }
   
   a {
     color: #007bff;
@@ -38,4 +62,21 @@ table {
   a:hover {
     text-decoration: underline;
   }
-  
+
+  button, input {
+    margin: 4px;
+  }
+
+  h1 {
+    background: linear-gradient(rgba(0, 255, 213, 0.89), #fff);
+    transform: scale(1);
+  /* transition: all 0.3s ease-in-out 0.2s; */
+  }
+
+  h1:hover {
+    color: rgb(67, 59, 177);
+    font-size: 2.1em;
+    opacity: 0.5;
+    transform: scale(1.5);
+    transition: all 0.3s ease-in-out 0.2s;
+  }
