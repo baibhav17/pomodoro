@@ -12,7 +12,9 @@ const PomodoroCounter = () => {
   const [alertTriggered, setAlertTriggered] = useState(false);
   const [youtubeTitle, setYoutubeTitle] = useState('');
   const [youtubeLink, setYoutubeLink] = useState('');
-
+  const baseColor = '#ffffff'
+  const defaultColor = JSON.parse(localStorage.getItem('ThemeColor')) || baseColor;
+  const [selectedColor, setSelectedColor] = useState(defaultColor);
   const youtubeTableRowMenu = ['title', 'link','edit', 'delete'];
   let youtubePlaylisttoLocalDB = [
     {
@@ -37,6 +39,10 @@ const PomodoroCounter = () => {
   useEffect(() => {
     localStorage.setItem('youtubePlaylist', JSON.stringify(youtubePlaylist));
   }, [youtubePlaylist]);
+
+  useEffect(() => {
+    localStorage.setItem('ThemeColor', JSON.stringify(selectedColor));
+  }, [selectedColor]);
 
 useEffect(() => {
     let intervalId;
@@ -123,9 +129,27 @@ useEffect(() => {
     setYoutubePlaylist(filteredYoutubeList);
   }
 
+  const handleColorChange = (e) => {
+    const selectedValue = e.target.value;
+    setSelectedColor(selectedValue);
+  };
+
+  const gradientColor = `linear-gradient(to top, ${selectedColor}, ${baseColor})`;
+
   return (
-    <div>
-      <h1>Pomodoro Timer</h1>
+    <div className="main-wrapper" style={{ backgroundImage: gradientColor }}>
+      <div className="header-wrapper">
+        <h1>Pomodoro Timer</h1>
+      </div>
+      <div className="timer-wrapper" >
+      <div>
+      <p>Select Background Color:</p>
+        <input
+          type="color"
+          value={selectedColor}
+          onChange={handleColorChange}
+        />
+      </div>
       <input
         type="number"
         placeholder="Hours"
@@ -188,6 +212,7 @@ useEffect(() => {
           ))}
           </tbody>
         </table>
+      </div>
       </div>
     </div>
   );
