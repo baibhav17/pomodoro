@@ -15,7 +15,7 @@ const PomodoroCounter = () => {
   const baseColor = '#ffffff'
   const defaultColor = JSON.parse(localStorage.getItem('ThemeColor')) || baseColor;
   const [selectedColor, setSelectedColor] = useState(defaultColor);
-  const youtubeTableRowMenu = ['title', 'link','edit', 'delete'];
+  const youtubeTableRowMenu = ['index','title', 'link','edit', 'delete'];
   let youtubePlaylisttoLocalDB = [
     {
       index: 1,
@@ -29,6 +29,30 @@ const PomodoroCounter = () => {
       index: 2,
       title: 'Iraday',
       link: 'https://youtu.be/Qwm6BSGrOq0?si=NncWGYO_gGBdGVOj',
+      edit: 'edit',
+      delete: 'delete'
+    },
+    {
+      
+      index: 3,
+      title: 'Kinna Chir',
+      link: 'https://www.youtube.com/watch?v=cRsV7OXIyi0',
+      edit: 'edit',
+      delete: 'delete'
+    },
+    {
+      
+      index: 4,
+      title: 'Tere Bin',
+      link: 'https://www.youtube.com/watch?v=_trU-Wt9ucI',
+      edit: 'edit',
+      delete: 'delete'
+    },
+    {
+      
+      index: 5,
+      title: 'Tere Bina',
+      link: 'https://www.youtube.com/watch?v=UX2Xx4LIKSA',
       edit: 'edit',
       delete: 'delete'
     }
@@ -204,6 +228,7 @@ useEffect(() => {
           <tbody>
             {youtubePlaylist.map((item, index) => (
             <tr key={index}>
+              <td>{item.index}</td>
               <td>{item.title}</td>
               <td><a href={item.link} target="_blank" rel="noopener noreferrer">Watch</a></td>
               <td><button>{item.edit}</button></td>
