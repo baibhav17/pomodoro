@@ -34,7 +34,7 @@ const TaskList = () => {
           Add Tasks  
         </p>
         <input onChange={(e)=>setCurrentTask(e.target.value)} type="text" value={currentTask}/>
-        <button onClick={handleAddTask} disabled={currentTask.length == 0}>add</button>
+        <button onClick={handleAddTask}>add</button>
         </div>
         <div className="task-list">
             <ul>{taskList && taskList.map((item, index)=><li key={index}><span>{item}</span> <button onClick={()=>updateTask(item,index)}>update</button> <button onClick={()=>DeleteTask(item,index)}>delete</button></li>)}</ul>
