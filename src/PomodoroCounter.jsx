@@ -13,7 +13,7 @@ const PomodoroCounter = () => {
   const [youtubeTitle, setYoutubeTitle] = useState('');
   const [youtubeLink, setYoutubeLink] = useState('');
   const baseColor = '#ffffff'
-  const defaultColor = JSON.parse(localStorage.getItem('ThemeColor')) || baseColor;
+  const defaultColor = JSON.parse(localStorage.getItem('ThemeColor')) || 'A96A9B';
   const [selectedColor, setSelectedColor] = useState(defaultColor);
   const youtubeTableRowMenu = ['index','title', 'link','edit', 'delete'];
   let youtubePlaylisttoLocalDB = [
