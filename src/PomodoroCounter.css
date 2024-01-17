@@ -72,7 +72,6 @@ table {
   h1 {
     background: linear-gradient(rgba(0, 255, 213, 0.89), #fff);
     transform: scale(1);
-  /* transition: all 0.3s ease-in-out 0.2s; */
   }
 
   h1:hover {
@@ -81,6 +80,44 @@ table {
     opacity: 0.8;
     transform: scale(1.1);
     transition: all 0.3s ease-in-out 0.2s;
+  }
+
+  .time-clock-wrapper {
+    width: 0px; /* Adjust the width and height to change the circle size */
+  height: 0px; /* Same value as width to maintain a perfect circle */
+  /* background-color: #f00;
+  border-radius: 30%;  */
+  border-left: 70px solid transparent; /* Change the width of the triangle */
+  border-right: 70px solid transparent; /* Change the width of the triangle */
+  border-bottom: 140px solid #00f;
+  /* position: absolute; */
+  }
+
+  .time-clock-counter-wrapper {
+    width: 100px; /* Adjust the width and height to change the circle size */
+  height: 100px; /* Same value as width to maintain a perfect circle */
+  background-color: #f00;
+  border-radius: 30%; 
+  /* position: absolute; */
+  }
+
+  .timer-clock {
+    position: relative;
+    left: -28px;
+    right: 44px;
+    bottom: -62px;
+  }
+
+  .timer-clock-counter {
+    position: relative;
+    top: 40%;
+    border-block: 0.5px dotted white;
+
+  }
+
+  .timer-block {
+    display: flex;
+    justify-content: center;
   }
 
   

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './PomodoroCounter.css';
 import TaskList from './TaskList';
+import TimeClock from './TimeClock';
 
 const PomodoroCounter = () => {
   const [hours, setHours] = useState(0);
@@ -13,7 +14,7 @@ const PomodoroCounter = () => {
   const [youtubeTitle, setYoutubeTitle] = useState('');
   const [youtubeLink, setYoutubeLink] = useState('');
   const baseColor = '#ffffff'
-  const defaultColor = JSON.parse(localStorage.getItem('ThemeColor')) || 'E647C3';
+  const defaultColor = JSON.parse(localStorage.getItem('ThemeColor')) || 'E647C3' || '9A1818';
   const [selectedColor, setSelectedColor] = useState(defaultColor);
   const youtubeTableRowMenu = ['index','title', 'link','edit', 'delete'];
   let youtubePlaylisttoLocalDB = [
@@ -59,6 +60,8 @@ const PomodoroCounter = () => {
   ];
   const youtubePlaylistLocalDB = JSON.parse(localStorage.getItem('youtubePlaylist')) || youtubePlaylisttoLocalDB;
   const [youtubePlaylist, setYoutubePlaylist] = useState(youtubePlaylistLocalDB)
+  const [weatherData, setWeatherData] = useState({})
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
     localStorage.setItem('youtubePlaylist', JSON.stringify(youtubePlaylist));
@@ -67,6 +70,45 @@ const PomodoroCounter = () => {
   useEffect(() => {
     localStorage.setItem('ThemeColor', JSON.stringify(selectedColor));
   }, [selectedColor]);
+
+  useEffect(()=>{
+    const weatherDataApi = async () => {
+      try {
+        const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m');
+        const result = await response.json();
+        setWeatherData(result);
+        console.log(result)
+      }
+      catch (error) {
+        console.log('Error in weather Data Api', error);
+      }
+    }
+    weatherDataApi();
+  },[])
+//   const currentDate = new Date();
+//   const currentHour = currentDate.getHours();
+// const currentMinutes = currentDate.getMinutes();
+// const currentSeconds = currentDate.getSeconds();
+//   useEffect(()=>{
+//     console.log(`Time is ${currentHour}:${currentMinutes}:${currentSeconds}`);
+//   },[currentSeconds, currentMinutes, currentHour])
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    // Update the time every second
+    setTime(new Date());
+  }, 1000);
+
+  // Clear the interval on component unmount
+  return () => clearInterval(interval);
+}, []); // Run effect only once on mount
+
+// Extract hours, minutes, and seconds from the current time
+const currentHour = time.getHours();
+const currentMinutes = time.getMinutes();
+const currentSeconds = time.getSeconds();
+
+console.log(`Time is ${currentHour}:${currentMinutes}:${currentSeconds}`);
 
 useEffect(() => {
     let intervalId;
@@ -105,12 +147,18 @@ useEffect(() => {
 
   const startTimer = () => {
     const totalSeconds = parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(seconds);
-    setDirty(true)
-
-    if (totalSeconds > 0 && !timerRunning) {
-      setTimeLeft(totalSeconds);
-      setTimerRunning(true);
-      setAlertTriggered(false);
+    setDirty(true);
+  
+    if (totalSeconds > 0) {
+      if (!timerRunning) {
+        // If timer was not running, start from the current timeLeft
+        setTimeLeft(prevTimeLeft => prevTimeLeft || totalSeconds);
+        setTimerRunning(true);
+        setAlertTriggered(false);
+      } else {
+        // If timer was running, add the new time to the remaining timeLeft
+        setTimeLeft(prevTimeLeft => prevTimeLeft + totalSeconds);
+      }
     } else {
       alert('Please enter a valid time and ensure the timer is not already running.');
     }
@@ -163,7 +211,7 @@ useEffect(() => {
   return (
     <div className="main-wrapper" style={{ backgroundImage: gradientColor }}>
       <div className="header-wrapper">
-        <h1>Pomodoro Timer</h1>
+        <h1 onClick={()=> resetTimer()}>Pomodoro Timer</h1>
       </div>
       <div className="timer-wrapper" >
       <div>
@@ -198,7 +246,13 @@ useEffect(() => {
       <button onClick={startTimer}>Start</button>
       <button onClick={stopTimer}>Stop</button>
       <button onClick={resetTimer}>Reset</button>
-      <p>{`${String(Math.floor(timeLeft / 3600)).padStart(2, '0')}:${String(Math.floor((timeLeft % 3600) / 60)).padStart(2, '0')}:${String(timeLeft % 60).padStart(2, '0')}`}</p>
+      {/* <p>{`${String(Math.floor(timeLeft / 3600)).padStart(2, '0')}:${String(Math.floor((timeLeft % 3600) / 60)).padStart(2, '0')}:${String(timeLeft % 60).padStart(2, '0')}`}</p> */}
+      <p className="timer-block"><TimeClock
+          currentHour={`${String(Math.floor(timeLeft / 3600)).padStart(2, '0')}`}
+          currentMinutes={`${String(Math.floor((timeLeft % 3600) / 60)).padStart(2, '0')}`}
+          currentSeconds={`${String(timeLeft % 60).padStart(2, '0')}`}
+          counter={true}
+       /></p>
       <div>
         <p>Youtube Playlist</p>
         <input
@@ -217,6 +271,11 @@ useEffect(() => {
       </div>
       <div>
       <TaskList />
+      {/* <TimeClock 
+      currentHour={currentHour}
+      currentMinutes={currentMinutes}
+      currentSeconds={currentSeconds}
+      /> */}
       </div>
       <div className="youtube-table">
         <table>
