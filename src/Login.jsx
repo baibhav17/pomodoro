@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import './Login.css';
 import { UserContext } from './App';
+import { fetchUserList } from './service';
 
 const Login = () => {
   const defaultUsers = [
@@ -20,12 +21,26 @@ const Login = () => {
 
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const authUserList = JSON.parse(localStorage.getItem('authUserList')) || defaultUsers
-  const [userList, setUserList] = useState(authUserList);
+  const [userList, setUserList] = useState([]);
 
   const [userName, setUserName] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [successfulLogin, setSuccessfulLogin] = useState(false);
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
+
+  // getting userList from service.js
+  useEffect(()=>{
+    const userListData = async () =>{
+      try{
+        const userListResult = await fetchUserList();
+        setUserList(userListResult)
+      } catch(err) {
+        console.log(err)
+      }
+    }
+    userListData();
+  },[])
+  console.log('userList',userList)
 
   useEffect(() => {
     localStorage.setItem('authUserList', JSON.stringify(userList));
@@ -58,7 +73,7 @@ const Login = () => {
     setUserName('');
   };
 
-  const handleSignupSubmit = (event) => {
+  const handleSignupSubmit = async (event) => {
       event.preventDefault();
       const newUser = {
           index: authUserList.length + 1,
@@ -66,10 +81,33 @@ const Login = () => {
           userID:event.target?.[1].value,
           password: event.target?.[2].value,
       }
-      setUserList([...userList, newUser])
-    // localStorage.setItem('authUserList', JSON.stringify(userList));
+    const isEmailExisting = userList.some(user => user.userID === newUser.userID);
+    if(isEmailExisting) {
+      alert('userID already exists, please pick a different id')
+    } else {
+      try {
+        const addNewUserRes = await fetch('http://localhost:3020/createUser',{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newUser)
+        })
+        const addNewUser = await addNewUserRes.json()
+      setUserList([...userList, addNewUser])
+      console.log('addNewUser',addNewUser,'newUser',newUser,'event',event)
+
+      const updatedUserList = await fetchUserList();
+      setUserList(updatedUserList);
+
+      } catch(err) {
+        console.log(err)
+      }
+      
+
 
     setIsSignupModalOpen(false);
+    }      
 };
 console.log('userList1',userList)
 
