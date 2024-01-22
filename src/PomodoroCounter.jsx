@@ -108,7 +108,7 @@ const currentHour = time.getHours();
 const currentMinutes = time.getMinutes();
 const currentSeconds = time.getSeconds();
 
-console.log(`Time is ${currentHour}:${currentMinutes}:${currentSeconds}`);
+// console.log(`Time is ${currentHour}:${currentMinutes}:${currentSeconds}`);
 
 useEffect(() => {
     let intervalId;

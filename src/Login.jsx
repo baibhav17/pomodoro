@@ -21,19 +21,24 @@ const Login = () => {
 
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const authUserList = JSON.parse(localStorage.getItem('authUserList')) || defaultUsers
-  const [userList, setUserList] = useState([]);
+  const [userList, setUserList] = useState([] || authUserList);
 
   const [userName, setUserName] = useState('');
   const [userPassword, setUserPassword] = useState('');
-  const [successfulLogin, setSuccessfulLogin] = useState(false);
+  // const [successfulLogin, setSuccessfulLogin] = useState(false);
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
 
   // getting userList from service.js
   useEffect(()=>{
     const userListData = async () =>{
-      try{
+    // In case if server is not running
+      try{if(userList && userList.length>0){
         const userListResult = await fetchUserList();
         setUserList(userListResult)
+      } else {
+        setUserList(authUserList)
+      }
+        
       } catch(err) {
         console.log(err)
       }
@@ -43,7 +48,12 @@ const Login = () => {
   console.log('userList',userList)
 
   useEffect(() => {
-    localStorage.setItem('authUserList', JSON.stringify(userList));
+    // In case if server is not running
+    if(userList && userList.length>0){
+      localStorage.setItem('authUserList', JSON.stringify(userList));
+    } else {
+      localStorage.setItem('authUserList', JSON.stringify(authUserList));
+    }
   }, [userList]);
 
   const toggleSignupModal = () => {
@@ -101,6 +111,7 @@ const Login = () => {
       setUserList(updatedUserList);
 
       } catch(err) {
+        alert("Can't add the new user. Please check logs, something went wrong")
         console.log(err)
       }
       
