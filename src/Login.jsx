@@ -45,7 +45,6 @@ const Login = () => {
     }
     userListData();
   },[])
-  console.log('userList',userList)
 
   useEffect(() => {
     // In case if server is not running
@@ -105,7 +104,6 @@ const Login = () => {
         })
         const addNewUser = await addNewUserRes.json()
       setUserList([...userList, addNewUser])
-      console.log('addNewUser',addNewUser,'newUser',newUser,'event',event)
 
       const updatedUserList = await fetchUserList();
       setUserList(updatedUserList);
@@ -120,7 +118,6 @@ const Login = () => {
     setIsSignupModalOpen(false);
     }      
 };
-console.log('userList1',userList)
 
   return (
     <div className="login-container">
